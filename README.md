@@ -1,224 +1,222 @@
 # Open-Forensics
 
-**Simulateur d'investigation numérique pour la formation des analystes CERT et DFIR.** Dix
-dossiers d'incident, uniquement des journaux, quinze mille lignes à éplucher. On vous remet
-ce que le client a su collecter, et vous devez établir les faits, reconstituer ce que
-l'attaquant a fait, et le démontrer.
+**A digital forensics simulator for training CERT and DFIR analysts.** Ten incident
+folders, nothing but logs, fifteen thousand lines to sift through. You get whatever the
+client managed to collect, and you have to establish the facts, reconstruct what the
+attacker did, and prove it.
 
-Application **statique** : trois fichiers ouverts dans un navigateur suffisent. Aucune
-dépendance, aucun serveur, aucune connexion réseau, aucune donnée transmise.
+**Static application**: three files opened in a browser are enough. No dependencies, no
+server, no network connection, no data transmitted.
 
-Application compagnon d'[Open-SOC](https://github.com/) : là où Open-SOC entraîne la
-décision sous pression, Open-Forensics entraîne la reconstitution méthodique.
+🔗 **Live demo**: <https://spellskite-coding.github.io/Open-Forensics/>
+
+Companion app to [Open-SOC](https://github.com/): where Open-SOC trains decision-making
+under pressure, Open-Forensics trains methodical reconstruction.
 
 ---
 
-## Démarrer
+## Getting started
 
 ```bash
-git clone <votre-dépôt> Open-Forensics
+git clone <your-repo> Open-Forensics
 cd Open-Forensics
 ```
 
-Puis, au choix :
+Then, either:
 
-* ouvrir `index.html` directement dans le navigateur, ou
-* servir le dossier localement, recommandé pour un usage en salle :
+* open `index.html` directly in your browser, or
+* try it online right away: <https://spellskite-coding.github.io/Open-Forensics/>, or
+* serve the folder locally, recommended for classroom use:
 
 ```bash
 python3 -m http.server 8000
-# puis http://localhost:8000/
+# then http://localhost:8000/
 ```
 
-La suite de tests s'ouvre de la même façon : `tests/run.html`. Elle s'exécute dans le
-navigateur et affiche `TOUS LES TESTS PASSENT` ou la liste des échecs. Aucun outil externe,
-aucun `npm install`.
+The test suite opens the same way: `tests/run.html`. It runs in the browser and displays
+`ALL TESTS PASS` or the list of failures. No external tooling, no `npm install`.
 
 ---
 
-## Le déroulé d'un dossier
+## How a case unfolds
 
-**1. Le briefing.** La saisine du client, le périmètre technique, les conditions de collecte
-et surtout **les limites** : quels journaux manquent, sur quelle période, et pourquoi. Un
-journal absent est une limite d'investigation à documenter, pas une excuse. À l'inverse, un
-journal présent et couvrant la période permet de conclure à une absence — et c'est souvent
-la conclusion la plus lourde de conséquences.
+**1. The briefing.** The client's engagement letter, the technical scope, the collection
+conditions, and above all **the limitations**: which logs are missing, over what period,
+and why. A missing log is an investigative limitation to document, not an excuse.
+Conversely, a log that is present and covers the period allows you to conclude an event
+did *not* happen — and that is often the heaviest conclusion of all.
 
-**2. Les journaux.** Il n'y a que cela : pas d'image disque, pas de capture mémoire. Chaque
-pièce est un flux d'évènements horodatés, où les quelques lignes utiles sont noyées dans
-l'activité normale du client. Le volet de gauche offre une **recherche transverse** qui
-cherche la même chaîne dans toutes les pièces : c'est ainsi qu'on suit une adresse, un
-compte ou un nom de fichier d'un journal à l'autre. Chaque pièce dispose en plus de son
-propre filtre, avec surlignage des occurrences.
+**2. The logs.** That's all there is: no disk image, no memory capture. Each exhibit is a
+stream of timestamped events, where the few useful lines are buried in the client's normal
+activity. The left-hand panel offers a **cross-exhibit search** that looks for the same
+string across every exhibit: that's how you trace an address, an account, or a filename
+from one log to another. Each exhibit also has its own filter, with matches highlighted.
 
-**3. Les constatations.** Une dizaine de questions factuelles par dossier, validées une par
-une comme des drapeaux : adresse de l'attaquant, compte compromis, horodatage du point
-d'entrée, empreinte du binaire, volume exfiltré, portée réelle de la compromission. Les
-réponses sont normalisées avec indulgence — casse, accents, séparateurs de milliers,
-horodatages français ou ISO, indicateurs « défangués » (`hxxp://`, `[.]`) sont acceptés.
+**3. The findings.** About a dozen factual questions per case, validated one by one like
+checkpoints: attacker's address, compromised account, timestamp of the initial entry point,
+binary's hash, volume exfiltrated, real scope of the compromise. Answers are normalized
+leniently — case, accents, thousand separators, French or ISO timestamps, and "defanged"
+indicators (`hxxp://`, `[.]`) are all accepted.
 
-**4. La chaîne d'attaque.** Pour chacune des douze tactiques ATT&CK, vous désignez
-l'évènement du dossier qui la démontre et la technique correspondante. Le vivier
-d'évènements contient aussi de l'activité légitime : tout n'est pas à placer. Et **déclarer
-qu'une tactique n'a pas été observée rapporte autant de points que d'en trouver une** :
-affirmer qu'il n'y a pas eu d'exfiltration, quand les journaux permettent de le démontrer,
-est un résultat d'investigation.
+**4. The attack chain.** For each of the twelve ATT&CK tactics, you identify the event in
+the case that demonstrates it and the matching technique. The pool of events also contains
+legitimate activity: not everything is meant to be placed. And **declaring that a tactic
+was not observed earns just as many points as finding one**: stating that no exfiltration
+occurred, when the logs allow you to demonstrate that, is a legitimate investigative
+finding.
 
-**5. La synthèse.** Le livrable du CERT, noté sur sa longueur et sur les indicateurs du
-dossier qu'il cite. Un rapport qui n'apporte aucune preuve à l'appui de ses affirmations
-n'est pas exploitable.
+**5. The write-up.** The CERT deliverable, scored on its length and on the case indicators
+it cites. A report that offers no evidence to back up its claims isn't usable.
 
-**On peut clore à tout moment**, sans avoir tout trouvé. Le score sera partiel, le
-débriefing sera entier.
+**You can close a case at any time**, without having found everything. The score will be
+partial, but the debrief will be complete.
 
 ---
 
-## Les dix dossiers
+## The ten cases
 
-| | Dossier | Difficulté | Durée estimée | Constatations | Lignes de journaux |
+| | Case | Difficulty | Estimated time | Findings | Log lines |
 |---|---|---|---|---|---|
-| CAS-01 | Rançongiciel via RDP exposé — transporteur | facile | 35 min | 11 | 1 220 |
-| CAS-02 | Virement détourné après vol de session — cabinet d'avocats | facile | 45 min | 11 | 1 150 |
-| CAS-03 | Fuite de plans avant un départ — bureau d'études | facile | 40 min | 10 | 1 003 |
-| CAS-04 | Webshell et vol de base clients — boutique en ligne | moyen | 60 min | 12 | 1 421 |
-| CAS-05 | Mise à jour téléchargée sur un faux miroir — industrie | moyen | 55 min | 12 | 1 572 |
-| CAS-06 | Minage sur la chaîne d'intégration — éditeur logiciel | moyen | 55 min | 12 | 1 493 |
-| CAS-07 | Fournisseur fictif dans l'ERP — cabinet comptable | moyen | 60 min | 12 | 1 441 |
-| CAS-08 | DCSync et ticket doré — collectivité | difficile | 110 min | 16 | 2 163 |
-| CAS-09 | Journaux effacés et horodatages falsifiés — fintech | difficile | 100 min | 15 | 2 002 |
-| CAS-10 | Chiffrement de l'hyperviseur — centre hospitalier | difficile | 95 min | 15 | 1 888 |
+| CASE-01 | Ransomware via exposed RDP — freight carrier | easy | 35 min | 11 | 1,220 |
+| CASE-02 | Wire transfer fraud after session theft — law firm | easy | 45 min | 11 | 1,150 |
+| CASE-03 | Blueprint leak ahead of a resignation — engineering firm | easy | 40 min | 10 | 1,003 |
+| CASE-04 | Webshell and customer database theft — online store | medium | 60 min | 12 | 1,421 |
+| CASE-05 | Update downloaded from a fake mirror — manufacturing | medium | 55 min | 12 | 1,572 |
+| CASE-06 | Cryptomining on the CI pipeline — software vendor | medium | 55 min | 12 | 1,493 |
+| CASE-07 | Fake vendor in the ERP — accounting firm | medium | 60 min | 12 | 1,441 |
+| CASE-08 | DCSync and golden ticket — local government | hard | 110 min | 16 | 2,163 |
+| CASE-09 | Wiped logs and forged timestamps — fintech | hard | 100 min | 15 | 2,002 |
+| CASE-10 | Hypervisor encryption — hospital | hard | 95 min | 15 | 1,888 |
 
-Environ **onze heures d'investigation**, 126 constatations, 120 tactiques à qualifier et
-15 353 lignes de journaux — dont moins de 3 % portent l'attaque. La difficulté augmente la
-subtilité des cas, le nombre de sources à recouper et la durée : un dossier difficile
-demande deux heures et refuse de se laisser résoudre par une seule recherche.
+Roughly **eleven hours of investigation**, 126 findings, 120 tactics to qualify, and
+15,353 log lines — of which less than 3% carry the attack. Difficulty scales the subtlety
+of each case, the number of sources to cross-reference, and the duration: a hard case takes
+two hours and won't yield to a single search.
 
-Chaque dossier comporte au moins deux tactiques non observées, et plusieurs contiennent une
-activité légitime qui ressemble à s'y méprendre à l'attaque — un collègue qui branche une
-clé USB, une opération comptable régulière, un développeur qui clone un dépôt. Les écarter
-explicitement fait partie du travail.
+Every case includes at least two unobserved tactics, and several contain legitimate
+activity that looks deceptively like the attack — a colleague plugging in a USB drive, a
+routine accounting operation, a developer cloning a repository. Ruling those out explicitly
+is part of the job.
 
-> **Formateurs :** la vérité terrain vit dans `js/data/cas-*.js`. Chaque fichier porte un
-> avertissement en tête. Demandez aux étudiants de ne pas les ouvrir avant d'avoir traité le
-> dossier — c'est le seul moyen de tricher, et il est explicite.
+> **Instructors:** ground truth lives in `js/data/cas-*.js`. Every file carries a warning
+> at the top. Ask students not to open them before working the case — it's the only way to
+> cheat, and it's explicit.
 
 ---
 
-## La notation
+## Scoring
 
-| Élément | Points |
+| Item | Points |
 |---|---|
-| Constatation établie | 6 |
-| Réponse erronée | −0,5, plafonné à −3 par constatation |
-| Indice affiché | −2 |
-| Évènement correct dans la chaîne d'attaque | 3 par tactique |
-| Technique correcte dans la chaîne d'attaque | 1,5 par tactique |
-| Synthèse | jusqu'à 8 (longueur, puis un et trois indicateurs cités) |
+| Finding established | 6 |
+| Wrong answer | −0.5, capped at −3 per finding |
+| Hint revealed | −2 |
+| Correct event in the attack chain | 3 per tactic |
+| Correct technique in the attack chain | 1.5 per tactic |
+| Write-up | up to 8 (length, then one and three indicators cited) |
 
-Le débriefing donne un score sur 100, une mention de A à E et quatre axes : établissement
-des faits, reconstitution de la chaîne, restitution écrite, autonomie. Puis, pour **chaque**
-constatation — trouvée ou non — la réponse attendue, la vôtre, **où elle se trouvait** dans
-les pièces et **pourquoi elle comptait**. Idem pour chaque tactique de la chaîne. Le tout
-suivi du récit réel de l'incident, des enseignements du dossier, de ses pièges, d'une fiche
-d'indicateurs prête à transmettre à un SOC, et d'un rapport JSON exportable.
+The debrief gives a score out of 100, a grade from A to E, and four axes: fact
+establishment, chain reconstruction, written delivery, autonomy. Then, for **every**
+finding — found or not — the expected answer, yours, **where it was located** in the
+exhibits, and **why it mattered**. Same for every tactic in the chain. All of it followed
+by the real story of the incident, the case's lessons, its pitfalls, an indicator sheet
+ready to hand off to a SOC, and an exportable JSON report.
 
-La progression — meilleur score et nombre de passages par dossier — est conservée dans le
-`localStorage` du navigateur. Aucune réponse rédigée n'y est stockée.
-
----
-
-## Le trafic de fond
-
-Un journal réel n'est pas une liste de preuves. Les lignes utiles de chaque dossier sont
-écrites à la main ; tout le reste est engendré par quinze générateurs de trafic normal
-(`js/data/bruit.js`) : authentifications Windows, télémétrie de processus, agent de
-sécurité, pare-feu, mandataire web, résolutions DNS, fédération d'identité, messagerie,
-journaux Unix, serveur web, accès distant, plateforme collaborative, base de données,
-chaîne d'intégration, hyperviseur.
-
-Ce bruit est **déterministe** : la graine dérive de l'identifiant du dossier et de celui de
-la pièce. Deux ouvertures du même dossier donnent exactement le même journal, ligne pour
-ligne, ce qui permet à un formateur de préparer une correction et à deux étudiants de
-comparer leurs démarches sur des pièces identiques.
+Progress — best score and number of attempts per case — is kept in the browser's
+`localStorage`. No written answers are stored there.
 
 ---
 
-## Posture de sécurité
+## Background traffic
 
-* **Aucune dépendance.** Zéro bibliothèque tierce, zéro ressource distante, zéro police
-  externe.
-* **Aucun réseau.** `connect-src 'none'` : la page ne peut pas émettre de requête. Elle
-  fonctionne en environnement isolé.
-* **Politique de sécurité du contenu stricte**, déclarée dans `index.html` :
-  `default-src 'none'`, scripts et styles limités à l'origine, ni script ni style en ligne,
+A real log isn't a list of evidence. The useful lines in each case are hand-written;
+everything else is generated by fifteen normal-traffic generators (`js/data/bruit.js`):
+Windows authentication, process telemetry, security agent, firewall, web proxy, DNS
+resolution, identity federation, email, Unix logs, web server, remote access,
+collaboration platform, database, CI pipeline, hypervisor.
+
+This noise is **deterministic**: the seed is derived from the case ID and the exhibit ID.
+Opening the same case twice produces exactly the same log, line for line, which lets an
+instructor prepare an answer key and lets two students compare their approaches on
+identical exhibits.
+
+---
+
+## Security posture
+
+* **No dependencies.** Zero third-party libraries, zero remote resources, zero external
+  fonts.
+* **No network.** `connect-src 'none'`: the page cannot issue a request. It works in an
+  isolated environment.
+* **Strict Content Security Policy**, declared in `index.html`: `default-src 'none'`,
+  scripts and styles restricted to the origin, no inline script or style,
   `object-src 'none'`, `base-uri 'none'`, `form-action 'none'`.
-* **Aucune injection possible.** Le DOM est construit exclusivement par `createElement` et
-  `textContent` — y compris le surlignage des résultats de recherche. Il n'y a pas une seule
-  occurrence de `innerHTML`, `eval` ou `new Function` dans le code.
-* **Fabrique d'éléments verrouillée.** `util.el()` refuse par construction tout attribut
-  `on*` ainsi que `style`, `href`, `src`, `srcdoc`, `action`, `formaction`, `ping` et
-  `background`.
-* **Stockage local validé à la relecture**, borné en taille et en nombre d'entrées ; un
-  stockage indisponible n'empêche pas l'application de fonctionner.
-* **Compatibilité.** JavaScript ES5 strict, sans syntaxe moderne ni promesse. `Math.imul`
-  dispose d'un repli, `crypto` et `localStorage` sont encapsulés, `:focus-visible` est
-  précédé d'une règle de repli. Firefox, Chrome, Edge, Safari, en version de bureau comme en
-  `file://`.
+* **No injection possible.** The DOM is built exclusively with `createElement` and
+  `textContent` — including search-result highlighting. There is not a single occurrence
+  of `innerHTML`, `eval`, or `new Function` in the code.
+* **Locked-down element factory.** `util.el()` refuses by construction any `on*`
+  attribute, as well as `style`, `href`, `src`, `srcdoc`, `action`, `formaction`, `ping`,
+  and `background`.
+* **Local storage validated on read**, bounded in size and entry count; unavailable
+  storage does not prevent the app from working.
+* **Compatibility.** Strict ES5 JavaScript, no modern syntax or promises. `Math.imul` has
+  a fallback, `crypto` and `localStorage` are wrapped, `:focus-visible` is preceded by a
+  fallback rule. Firefox, Chrome, Edge, Safari, on desktop as well as over `file://`.
 
-### Tout est fictif
+### Everything is fictional
 
-Aucune organisation, personne, machine, adresse ou empreinte de ce dépôt n'existe. Les
-adresses IP appartiennent aux plages réservées à la documentation (RFC 5737 : `192.0.2.0/24`,
-`198.51.100.0/24`, `203.0.113.0/24`) et les domaines aux TLD réservés `.test`, `.invalid` et
-`.example` (RFC 2606). Aucun indicateur de ce simulateur ne peut donc désigner une ressource
-réelle, et les journaux d'exercice ne pollueront pas une plateforme de renseignement si un
-étudiant les recopie par mégarde.
+No organization, person, machine, address, or hash in this repository exists. IP addresses
+belong to the ranges reserved for documentation (RFC 5737: `192.0.2.0/24`,
+`198.51.100.0/24`, `203.0.113.0/24`), and domains use the reserved TLDs `.test`,
+`.invalid`, and `.example` (RFC 2606). No indicator from this simulator can therefore
+point to a real resource, and the exercise logs won't pollute a threat intelligence
+platform if a student accidentally copies them out.
 
 ---
 
 ## Structure
 
 ```
-index.html               Page unique, politique de sécurité du contenu
-css/openforensics.css    Feuille de style unique, thème sombre
-js/util.js               DOM sûr, aléatoire déterministe, formatage
-js/data/referentiel.js   Tactiques et techniques ATT&CK, barème, natures de pièces
-js/data/bruit.js         Quinze générateurs de trafic de fond
-js/data/cas-01..10.js    Les dix dossiers et leur vérité terrain (SPOILERS)
-js/engine.js             Journaux, recherche, constatations, notation (sans DOM)
-js/ui.js                 Rendu et interactions
-js/app.js                Amorçage et filet de sécurité
-tests/run.html           Suite de tests exécutable dans le navigateur
-tests/tests.js           59 assertions : normalisation, intégrité, volumétrie, notation
+index.html               Single page, Content Security Policy
+css/openforensics.css    Single stylesheet, dark theme
+js/util.js               Safe DOM, deterministic randomness, formatting
+js/data/referentiel.js   ATT&CK tactics and techniques, scoring, exhibit types
+js/data/bruit.js         Fifteen background-traffic generators
+js/data/cas-01..10.js    The ten cases and their ground truth (SPOILERS)
+js/engine.js             Logs, search, findings, scoring (no DOM)
+js/ui.js                 Rendering and interactions
+js/app.js                Bootstrapping and safety net
+tests/run.html           Test suite runnable in the browser
+tests/tests.js           59 assertions: normalization, integrity, volume, scoring
 ```
 
-Le moteur ne touche jamais au DOM : c'est ce qui permet aux tests de rejouer des
-investigations complètes — parfaite, abandonnée, partielle, entièrement assistée — et de
-vérifier que la notation les sépare correctement.
+The engine never touches the DOM: that's what lets the tests replay complete
+investigations — perfect, abandoned, partial, fully hint-assisted — and verify that
+scoring separates them correctly.
 
 ---
 
-## Ajouter un dossier
+## Adding a case
 
-Créez `js/data/cas-11.js` sur le modèle des autres et déclarez-le dans `index.html` et dans
-`tests/run.html`. Le contrat est vérifié automatiquement par la suite de tests :
+Create `js/data/cas-11.js` following the pattern of the others and declare it in
+`index.html` and `tests/run.html`. The contract is checked automatically by the test
+suite:
 
-* chaque pièce est un journal, avec des lignes `{ t, m }` horodatées `YYYY-MM-DD HH:MM:SS` et
-  une ou plusieurs spécifications de bruit renvoyant à une famille existante ;
-* chaque constatation porte un `hint`, un `where` et un `why`, et sa réponse doit se valider
-  elle-même après normalisation — de même que chacune de ses variantes acceptées ;
-* la chaîne couvre les douze tactiques, sans doublon, chaque technique appartenant bien à la
-  tactique de sa ligne, avec entre deux et neuf tactiques non observées ;
-* les indicateurs clés cités dans `keyIndicators` doivent réellement apparaître dans les
-  journaux engendrés ;
-* le volume de journaux et le nombre de constatations doivent correspondre à la difficulté
-  déclarée, et les lignes utiles rester sous 12 % du total.
+* each exhibit is a log, with `{ t, m }` lines timestamped `YYYY-MM-DD HH:MM:SS` and one
+  or more noise specifications pointing to an existing family;
+* each finding carries a `hint`, a `where`, and a `why`, and its answer must validate
+  itself after normalization — as must each of its accepted variants;
+* the chain covers all twelve tactics, with no duplicates, each technique belonging to
+  the tactic of its line, with between two and nine unobserved tactics;
+* the key indicators cited in `keyIndicators` must actually appear in the generated
+  logs;
+* the volume of logs and the number of findings must match the declared difficulty, and
+  the useful lines must stay under 12% of the total.
 
-Ouvrez `tests/run.html` : tout écart est signalé nommément.
+Open `tests/run.html`: any discrepancy is flagged by name.
 
 ---
 
-## Licence
+## License
 
-MIT — voir [LICENSE](LICENSE). Utilisation libre en centre de formation, en école ou en
-interne.
+MIT — see [LICENSE](LICENSE). Free to use in training centers, schools, or internally.
