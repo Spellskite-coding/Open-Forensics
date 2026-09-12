@@ -1,0 +1,51 @@
+name: Contrôles statiques
+
+# Ces contrôles protègent les invariants de sécurité du projet. Ils ne
+# demandent aucune dépendance : ce sont des recherches de motifs dans le code.
+on:
+  push:
+  pull_request:
+
+jobs:
+  invariants:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Aucune construction dangereuse
+        run: |
+          if grep -rnE "innerHTML|outerHTML|insertAdjacentHTML|document\.write|eval\(|new Function" js/ tests/ --include="*.js"; then
+            echo "::error::construction interdite détectée"; exit 1
+          fi
+          echo "OK — aucune écriture de balisage ni évaluation dynamique"
+
+      - name: Syntaxe ES5 uniquement
+        run: |
+          if grep -rnE '=>|\bconst |\blet |`' js/ tests/ --include="*.js"; then
+            echo "::error::syntaxe non ES5 détectée"; exit 1
+          fi
+          echo "OK — ES5 strict, compatible avec tous les navigateurs courants"
+
+      - name: Politique de sécurité du contenu présente
+        run: |
+          grep -q "Content-Security-Policy" index.html
+          grep -q "default-src 'none'" index.html
+          echo "OK — politique de sécurité du contenu déclarée"
+
+      - name: Aucune ressource externe
+        run: |
+          if grep -nE '(src|href)="https?://' index.html tests/run.html; then
+            echo "::error::ressource externe référencée"; exit 1
+          fi
+          echo "OK — l'application ne charge que ses propres fichiers"
+
+      - name: Intégrité de la bibliothèque de dossiers
+        run: |
+          n=$(ls js/data/cas-*.js | wc -l)
+          echo "$n dossiers d'investigation"
+          test "$n" -ge 10
+          for f in js/data/cas-*.js; do
+            grep -q "keyIndicators" "$f" || { echo "::error::$f sans indicateurs clés"; exit 1; }
+            grep -q "debrief" "$f" || { echo "::error::$f sans débriefing"; exit 1; }
+          done
+          echo "OK — chaque dossier porte ses indicateurs et son débriefing"
