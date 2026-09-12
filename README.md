@@ -10,7 +10,7 @@ server, no network connection, no data transmitted.
 
 🔗 **Live demo**: <https://spellskite-coding.github.io/Open-Forensics/>
 
-Companion app to [Open-SOC](https://github.com/): where Open-SOC trains decision-making
+Companion app to [Open-SOC](https://github.com/Spellskite-coding/Open-SOC): where Open-SOC trains decision-making
 under pressure, Open-Forensics trains methodical reconstruction.
 
 ---
